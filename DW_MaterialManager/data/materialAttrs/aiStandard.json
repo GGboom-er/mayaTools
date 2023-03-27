@@ -1,0 +1,70 @@
+{
+"diffuseColor" 								:["color","default"],
+"diffuseWeight" 							:["Kd","default"],
+"diffuseRoughness" 							:["diffuseRoughness","default"],
+
+"specularOnly"								:["none","none"],
+
+"anisotropy"								:["specularAnisotropy","default"],
+"anisotropyRotation"						:["specularRotation","default"],
+"anisotropyUVcoords"						:["none","none"],
+
+"primaryMetalness"							:["none","none"],
+"primaryReflectionColor" 					:["KsColor","default"],
+"primaryReflectionWeight"					:["Ks","default"],
+"primaryReflectionGlossiness"				:["specularRoughness","reverse"],
+"primaryReflectionBRDF"						:["none","none"],
+"primaryReflectionUseFresnel"				:["specularFresnel","default"],
+"primaryReflectionUseRefractionFresnel"		:["outOnly","outOnly_0"],
+"primaryReflectionF0"						:["Ksn","default"],
+"primaryReflectionF90"						:["none","none"],
+"primaryReflectionIOR"						:["none","none"],
+
+"secondaryMetalness"						:["none","none"],
+"secondaryReflectionColor" 					:["none","none"],
+"secondaryReflectionWeight"					:["none","none"],
+"secondaryReflectionGlossiness"				:["none","none"],
+"secondaryReflectionBRDF"					:["none","none"],
+"secondaryReflectionUseFresnel"				:["none","none"],
+"secondaryReflectionUseRefractionFresnel"	:["none","none"],
+"secondaryReflectionF0"						:["none","none"],
+"secondaryReflectionF90"					:["none","none"],
+"secondaryReflectionIOR"					:["none","none"],
+
+"refractionColor"							:["KtColor","default"],
+"refractionWeight"							:["Kt","default"],
+"refractionGlossiness"						:["refractionRoughness","reverse"],
+"IOR"										:["IOR","default"],
+"thinWalled"								:["none","none"],
+
+"enableFogColor"							:["none","none"],
+"fogDistance"								:["none","none"],
+"useEndColor"								:["none","none"],
+"endColor"									:["transmittance","default"],
+
+"enableTranslucency"						:["none","none"],
+"translucencyColor"							:["KsssColor","default"],
+"translucencyWeight"						:["Ksss","default"],
+
+"pureColor"									:["emissionColor","default"],
+"pureColorScale"							:["emission","default"],
+
+
+"cutout"									:["opacity","vector3ToScalar"],
+
+"bump"										:["normalCamera","default"],
+
+"sssWeight"									:["none","none"],
+"sssMode"									:["none","none"],
+"globalScale"								:["none","none"],
+"sssRadius01"								:["none","none"],
+"sssWeight01"								:["none","none"],
+"sssColor01"								:["none","none"],
+"sssRadius02"								:["none","none"],
+"sssWeight02"								:["none","none"],
+"sssColor02"								:["none","none"],
+"sssRadius03"								:["none","none"],
+"sssWeight03"								:["none","none"],
+"sssColor03"								:["none","none"]
+
+}

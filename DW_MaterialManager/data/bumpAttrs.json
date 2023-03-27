@@ -1,0 +1,35 @@
+{
+	"RedshiftBumpMap":{
+"bumpType" 											:["outOnly","outOnly_0"],
+"bumpDepth" 										:["scale","default"],
+"bumpTextureConnect"  								:["input","default"],
+"outAttr"											:["out","outOnly"],
+"directX"											:["none","none"]
+	},
+	"RedshiftNormalMap":{
+"bumpType" 											:["outOnly","outOnly_1"],
+"bumpDepth" 										:["scale","default"],
+"bumpTextureConnect"  								:["tex0","createFile"],
+"outAttr"											:["outDisplacementVector","outOnly"],
+"directX"											:["flipY","default"]
+	},
+
+
+	"bump2d":{
+"bumpType" 											:["bumpInterp","boolize_default0"],
+"bumpDepth" 										:["bumpDepth","default"],
+"bumpTextureConnect"  								:["bumpValue","useOutColor"],
+"outAttr"											:["outNormal","outOnly"],
+"directX"											:["aiFlipG","default"]
+
+	},
+		"VRayMtl":{
+"bumpType" 											:["bumpMapType","boolize_default0"],
+"bumpDepth" 										:["bumpMult","default"],
+"bumpTextureConnect"  								:["bumpMap","default"],
+"outAttr" 											:["outColor","default"],
+"directX"											:["outOnly","getVrayNormalType"]
+
+	}
+}
+

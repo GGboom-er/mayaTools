@@ -1,0 +1,6 @@
+使用方法是，把整个DW_MaterialManager文件夹拷贝到自己对应版本号maya的script文件夹里去，在我的文档路径下。比如这样的路径：C:\Users\UPC\Documents\maya\2016\scripts
+
+拷贝的时候，关闭maya
+
+然后把userLauncher脚本拖到python面板中执行即可。
+

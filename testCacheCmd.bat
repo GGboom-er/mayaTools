@@ -1,0 +1,1 @@
+"C:\Program Files\Autodesk\Maya2018\bin\mayapy.exe" C:\Users\yuweiming\Documents\maya\2018\scripts/testCacheFn.py cat11 chr  redwoman 193922

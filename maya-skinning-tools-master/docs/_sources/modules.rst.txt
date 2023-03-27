@@ -1,0 +1,7 @@
+skinning
+========
+
+.. toctree::
+   :maxdepth: 4
+
+   skinning

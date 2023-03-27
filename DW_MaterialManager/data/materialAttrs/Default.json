@@ -1,0 +1,72 @@
+{
+"diffuseColor" 								:["diffuse","default"],
+"diffuseWeight" 							:["diffuseWeight","default"],
+"diffuseRoughness" 							:["diffuseRoughness","default"],
+
+"specularOnly"								:["specularOnly","default"],
+
+"anisotropy"								:["anisotropy","default"],
+"anisotropyRotation"						:["anisotropyRotation","default"],
+"anisotropyUVcoords"						:["anisotropyUVcoords","default"],
+
+
+"primaryMetalness"							:["primaryMetalness","default"],
+"primaryReflectionColor" 					:["primaryReflectionColor","default"],
+"primaryReflectionWeight"					:["primaryReflectionWeight","default"],
+"primaryReflectionGlossiness"				:["primaryReflectionGlossiness","default"],
+"primaryReflectionBRDF"						:["primaryReflectionBRDF","{0:'default',1:'ggx'}"],
+"primaryReflectionUseFresnel"				:["primaryReflectionUseFresnel","default"],
+"primaryReflectionUseRefractionFresnel"		:["primaryReflectionUseRefractionFresnel","default"],
+"primaryReflectionF0"						:["primaryReflectionF0","default"],
+"primaryReflectionF90"						:["primaryReflectionF90","default"],
+"primaryReflectionIOR"						:["primaryReflectionIOR","default"],
+
+"secondaryMetalness"						:["secondaryMetalness","none"],
+"secondaryReflectionColor" 					:["secondaryReflectionColor","default"],
+"secondaryReflectionWeight"					:["secondaryReflectionWeight","default"],
+"secondaryReflectionGlossiness"				:["secondaryReflectionGlossiness","default"],
+"secondaryReflectionBRDF"					:["secondaryReflectionBRDF","{0:'default',1:'ggx'}"],
+"secondaryReflectionUseFresnel"				:["secondaryReflectionUseFresnel","default"],
+"secondaryReflectionUseRefractionFresnel"	:["secondaryReflectionUseRefractionFresnel","default"],
+"secondaryReflectionF0"						:["secondaryReflectionF0","default"],
+"secondaryReflectionF90"					:["secondaryReflectionF90","default"],
+"secondaryReflectionIOR"					:["secondaryReflectionIOR","default"],
+
+"refractionColor"							:["refractionColor","default"],
+"refractionWeight"							:["refractionWeight","default"],
+"refractionGlossiness"						:["refractionGlossiness","default"],
+"IOR"										:["IOR","default"],
+"thinWalled"								:["thinWalled","default"],
+
+"enableFogColor"							:["enableFogColor","default"],
+"fogDistance"								:["fogDistance","default"],
+"useEndColor"								:["useEndColor","default"],
+"endColor"									:["endColor","default"],
+
+"enableTranslucency"						:["enableTranslucency","default"],
+"translucencyColor"							:["translucencyColor","default"],
+"translucencyWeight"						:["translucencyWeight","default"],
+
+"pureColor"									:["pureColor","default"],
+"pureColorScale"							:["pureColorScale","default"],
+
+"cutout"									:["cutout","default"],
+
+"bump"										:["bump","default"],
+
+
+"sssWeight"									:["sssWeight","default"],
+"sssMode"									:["sssMode","default"],
+"globalScale"								:["globalScale","default"],
+"sssRadius01"								:["sssRadius01","default"],
+"sssWeight01"								:["sssWeight01","default"],
+"sssColor01"								:["sssColor01","default"],
+"sssRadius02"								:["sssRadius02","default"],
+"sssWeight02"								:["sssWeight02","default"],
+"sssColor02"								:["sssColor02","default"],
+"sssRadius03"								:["sssRadius03","default"],
+"sssWeight03"								:["sssWeight03","default"],
+"sssColor03"								:["sssColor03","default"]
+
+}
+

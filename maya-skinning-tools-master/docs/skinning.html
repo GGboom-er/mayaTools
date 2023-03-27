@@ -1,0 +1,332 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>skinning package &#8212; skinning  &#39;&#39; documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     ' &#39;&#39;',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skinning  &#39;&#39; documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-skinning">
+<span id="skinning-package"></span><h1>skinning package<a class="headerlink" href="#module-skinning" title="Permalink to this headline">¶</a></h1>
+<p>Skinning tools for Maya.</p>
+<div class="section" id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Extract the content of the .rar file anywhere on disk.</li>
+<li>Drag the skinning-tools.mel file in Maya to permanently install the script.</li>
+</ul>
+</div>
+<div class="section" id="tools">
+<h2>Tools<a class="headerlink" href="#tools" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt><strong>smooth-weights-context</strong></dt>
+<dd><ul class="first last simple">
+<li>Paint smooth weights tool in Maya using the weights of neighbouring vertices.</li>
+</ul>
+</dd>
+<dt><strong>remove-weights-context</strong></dt>
+<dd><ul class="first last simple">
+<li>Remove a specific influence on vertices with the paint tool.</li>
+</ul>
+</dd>
+<dt><strong>tweak-weights</strong></dt>
+<dd><ul class="first last simple">
+<li>Tweak influence weights on a component level.</li>
+</ul>
+</dd>
+<dt><strong>initialize-weights</strong></dt>
+<dd><ul class="first last simple">
+<li>Initialize skin weights.</li>
+</ul>
+</dd>
+<dt><strong>mirror-weights</strong></dt>
+<dd><ul class="first last simple">
+<li>Mirror skin weights using topology.</li>
+</ul>
+</dd>
+<dt><strong>soft-selection-to-weights</strong></dt>
+<dd><ul class="first last simple">
+<li>Convert soft selection to skin weights.</li>
+</ul>
+</dd>
+<dt><strong>delinear-weights</strong></dt>
+<dd><ul class="first last simple">
+<li>De-linearize skin weights.</li>
+</ul>
+</dd>
+<dt><strong>projection-plane</strong></dt>
+<dd><ul class="first last simple">
+<li>Create projection planes from selection joints.</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="skinning.gui.html">skinning.gui package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="skinning.gui.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="skinning.gui.models.html">skinning.gui.models package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="skinning.gui.models.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="skinning.gui.models.influence.html">skinning.gui.models.influence module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="skinning.gui.proxies.html">skinning.gui.proxies package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="skinning.gui.proxies.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="skinning.gui.proxies.tree.html">skinning.gui.proxies.tree module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="skinning.gui.widgets.html">skinning.gui.widgets package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="skinning.gui.widgets.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="skinning.gui.widgets.divider.html">skinning.gui.widgets.divider module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="skinning.gui.widgets.ease.html">skinning.gui.widgets.ease module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="skinning.gui.widgets.search.html">skinning.gui.widgets.search module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="skinning.gui.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="skinning.gui.common.html">skinning.gui.common module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="skinning.gui.dcc.html">skinning.gui.dcc module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="skinning.gui.icon.html">skinning.gui.icon module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="skinning.tools.html">skinning.tools package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="skinning.tools.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="skinning.tools.delinear_weights.html">skinning.tools.delinear_weights package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.delinear_weights.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.delinear_weights.html#note">Note</a></li>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.delinear_weights.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="skinning.tools.delinear_weights.commands.html">skinning.tools.delinear_weights.commands module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="skinning.tools.delinear_weights.ui.html">skinning.tools.delinear_weights.ui module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="skinning.tools.initialize_weights.html">skinning.tools.initialize_weights package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.initialize_weights.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.initialize_weights.html#note">Note</a></li>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.initialize_weights.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="skinning.tools.initialize_weights.commands.html">skinning.tools.initialize_weights.commands module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="skinning.tools.initialize_weights.ui.html">skinning.tools.initialize_weights.ui module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="skinning.tools.mirror_weights.html">skinning.tools.mirror_weights package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.mirror_weights.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.mirror_weights.html#note">Note</a></li>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.mirror_weights.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="skinning.tools.mirror_weights.commands.html">skinning.tools.mirror_weights.commands module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="skinning.tools.mirror_weights.ui.html">skinning.tools.mirror_weights.ui module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="skinning.tools.projection_plane.html">skinning.tools.projection_plane package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.projection_plane.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.projection_plane.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="skinning.tools.projection_plane.commands.html">skinning.tools.projection_plane.commands module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="skinning.tools.projection_plane.ui.html">skinning.tools.projection_plane.ui module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="skinning.tools.remove_weights_context.html">skinning.tools.remove_weights_context package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.remove_weights_context.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.remove_weights_context.html#note">Note</a></li>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.remove_weights_context.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="skinning.tools.remove_weights_context.commands.html">skinning.tools.remove_weights_context.commands module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="skinning.tools.remove_weights_context.ui.html">skinning.tools.remove_weights_context.ui module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="skinning.tools.smooth_weights_context.html">skinning.tools.smooth_weights_context package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.smooth_weights_context.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.smooth_weights_context.html#note">Note</a></li>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.smooth_weights_context.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="skinning.tools.smooth_weights_context.commands.html">skinning.tools.smooth_weights_context.commands module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="skinning.tools.soft_selection_weights.html">skinning.tools.soft_selection_weights package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.soft_selection_weights.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.soft_selection_weights.html#note">Note</a></li>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.soft_selection_weights.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="skinning.tools.soft_selection_weights.ui.html">skinning.tools.soft_selection_weights.ui module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="skinning.tools.tweak_weights.html">skinning.tools.tweak_weights package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.tweak_weights.html#installation">Installation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.tweak_weights.html#note">Note</a></li>
+<li class="toctree-l4"><a class="reference internal" href="skinning.tools.tweak_weights.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="skinning.tools.tweak_weights.ui.html">skinning.tools.tweak_weights.ui module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="skinning.utils.html">skinning.utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="skinning.utils.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="skinning.utils.api.html">skinning.utils.api package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="skinning.utils.api.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="skinning.utils.api.conversion.html">skinning.utils.api.conversion module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="skinning.utils.api.selection.html">skinning.utils.api.selection module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="skinning.utils.math.html">skinning.utils.math package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="skinning.utils.math.html#submodules">Submodules</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="skinning.utils.math.ease.html">skinning.utils.math.ease module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="skinning.utils.math.line.html">skinning.utils.math.line module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="skinning.utils.math.matrix.html">skinning.utils.math.matrix module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="skinning.utils.math.vector.html">skinning.utils.math.vector module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="skinning.utils.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="skinning.utils.conversion.html">skinning.utils.conversion module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="skinning.utils.decorator.html">skinning.utils.decorator module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="skinning.utils.influence.html">skinning.utils.influence module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="skinning.utils.naming.html">skinning.utils.naming module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="skinning.utils.progress.html">skinning.utils.progress module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="skinning.utils.skin.html">skinning.utils.skin module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="skinning.utils.symmetry.html">skinning.utils.symmetry module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="skinning.utils.undo.html">skinning.utils.undo module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="skinning.vendor.html">skinning.vendor package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="skinning.vendor.html#submodules">Submodules</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="skinning.vendor.apiundo.html">skinning.vendor.apiundo module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="skinning.install.html">skinning.install module</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">skinning package</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#tools">Tools</a></li>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/skinning.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skinning  &#39;&#39; documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, &#39;Robert Joosten&#39;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

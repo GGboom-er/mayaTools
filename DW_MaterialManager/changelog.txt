@@ -1,0 +1,33 @@
+v2.02
+-增加了插件运行报错，提示正确放置路径
+
+-重新修改UI排布
+
+-在MaterialConverter模块下，增加原始材质和转换材质互换的功能
+
+-增加alsurface 和rsMaterial材质转换过程中对3s的支持
+
+v2.02b
+
+-改了互换材质UI图标
+
+-改了帮助文档路径
+
+-增加了对VRayAlSurface材质的支持
+
+v2.03
+
+-增加了对相对路径的支持，比如在TexturesPath一栏中输入 \\test ,则指认目录为 你的当前项目文件夹\sourceimages\test 
+
+-重新调整了代码结构，现在所有的材质json文件都是独立分开的，方便大家自己添加想要支持的材质球
+
+-粗略增加了对blinn 材质以及phong材质的支持（因为这些材质比较老，和现代的材质结构非常不同，很多地方对应不上）
+
+-修改了插件自带的寻找新版本的路径，由百度云网盘改成trello页面：https://trello.com/b/Zphjhcpo
+
+v2.03b
+
+-改变了blinn 和 phong材质转换的过程中，会让别的材质彻底透明的问题
+
+-blinn 和phong材质球转换成别的材质的时候，尽量关闭Use Index of Refraction to affect F0，即使用折射率数值影响反射率F0的值。有的材质已经无法关闭菲涅尔效果了。
+
