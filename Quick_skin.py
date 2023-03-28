@@ -23,9 +23,7 @@ def getFaceIDbyMouseCursor( mesh_name ):
         pos = om.MPoint()
         dir = om.MVector()
 
-        # ���������е� ����
         hitpoint = om.MFloatPoint()
-        # �ӿڿռ� pos תΪ 3d view pos
         omui.M3dView().active3dView().viewToWorld(int(scenes_pos[0]), int(scenes_pos[1]), pos, dir)
         pos2 = om.MFloatPoint(pos.x, pos.y, pos.z)
 
