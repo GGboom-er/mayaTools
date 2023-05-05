@@ -25,7 +25,7 @@ class ExportNgJson(object):
         self._mesh = name
     @property
     def layers( self ):
-        return api.layers.Layers(self.mesh)
+        return api.layers.init_layers(self.mesh)
     @property
     def skinInfluences( self ):
         '''
@@ -98,11 +98,11 @@ class ExportNgJson(object):
         return allInfo
     def addLayer( self,layerName = '',influence = {}):
         '''
-
         :param layerName:
         :param influence: {'0':[vtx1,vtx2,vtx3]}
         :return: layer
         '''
+
         if layerName not in [l.name for l in self.layers.list()]:
             newLayer = self.layers.add(layerName,forceEmpty=True)#parent
             for i,w in influence.items():
