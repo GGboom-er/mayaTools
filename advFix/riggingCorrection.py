@@ -6,16 +6,14 @@ Date    :    2021/4/27
 QQ      :    375714316
 E-Mail  :    JesseChou0612@gmail.com or 375714316@qq.com
 """
-import attrToolsPK.attrTools as aa
-import python.tools.rigging.controllerManager as cm
+from python.tools.ywmTools.attrToolsPK import attrTools
 from python.core import config, setting
 from python.meta import parent, selection
-# from python.tools.rigging import controllerManager, utils
-import controllerManager
-import utils
+from python.tools.rigging import controllerManager, utils
+
 from maya import cmds
 
-reload(aa)
+
 def check_node(name, node):
     """
     # 检查指定类型指定名称的节点是否存在
@@ -734,21 +732,22 @@ class AdvRigging(ChrRigging):
                 break
         if judge:
             main_ctrl_scale_DeMatrix = check_node('mainControllerScaleDeMAtrix', 'decomposeMatrix')
-            cmds.connectAttr(self.third_controller_name+'.worldMatrix[0]',main_ctrl_scale_DeMatrix+'.inputMatrix',f =1)
-            con = cmds.listConnections('MainScaleMultiplyDivide.i1',p =1,d =0,s =1)
+            cmds.connectAttr(self.third_controller_name + '.worldMatrix[0]', main_ctrl_scale_DeMatrix + '.inputMatrix',
+                             f=1)
+            con = cmds.listConnections('MainScaleMultiplyDivide.i1', p=1, d=0, s=1)
             if con == ['Main.scale']:
-                cmds.disconnectAttr(con[0],'MainScaleMultiplyDivide.i1')
-            cmds.connectAttr(main_ctrl_scale_DeMatrix+'.outputScale','MainScaleMultiplyDivide.i1', f=True)
-            self.addSet(obj = main_ctrl_scale_DeMatrix,set = 'AllSet')
+                cmds.disconnectAttr(con[0], 'MainScaleMultiplyDivide.i1')
+            cmds.connectAttr(main_ctrl_scale_DeMatrix + '.outputScale', 'MainScaleMultiplyDivide.i1', f=True)
+            self.add_to_set(obj=main_ctrl_scale_DeMatrix, set='AllSet')
             if cmds.objExists(self.deform_group_name):
                 deform_scale_DeMatrix = check_node('deform_scale_DeMatrix', 'decomposeMatrix')
                 cmds.setAttr('%s.s' % self.deform_group_name, e=True, l=False)
                 cmds.connectAttr(self.third_controller_name + '.worldMatrix[0]', deform_scale_DeMatrix + '.inputMatrix',
                                  f=1)
-                cmds.connectAttr(deform_scale_DeMatrix + '.outputScale', self.deform_group_name+'.s', f=True)
+                cmds.connectAttr(deform_scale_DeMatrix + '.outputScale', self.deform_group_name + '.s', f=True)
                 cmds.setAttr('%s.s' % self.deform_group_name, e=True, l=True)
                 cmds.setAttr('%s.v' % self.deform_group_name, e=True, l=False)
-                self.addSet(obj=deform_scale_DeMatrix, set='AllSet')
+                self.add_to_set(obj=deform_scale_DeMatrix, set='AllSet')
 
     def lock_fk_translate(self):
         # 锁定并隐藏fk控制器的translate 和 visibility 属性
@@ -760,16 +759,18 @@ class AdvRigging(ChrRigging):
                     attrs = ['v'] + ['t%s' % x for x in 'xyz']
                     for attr in attrs:
                         cmds.setAttr('%s.%s' % (fk_ctr, attr), e=True, l=True, k=False, cb=False)
-    def lock_ikSec_scale( self ):
-        body_parts = [u'Neck',u'Shoulder',u'Elbow',u'Hip',u'Knee']
+
+    def lock_ikSec_scale(self):
+        body_parts = [u'Neck', u'Shoulder', u'Elbow', u'Hip', u'Knee']
         for side in self.adv_sides:
             for part in body_parts:
-                for i in range(1,3):
-                    iksec_ctr = 'Bend%s%s%s' % (part,i,side)
+                for i in range(1, 3):
+                    iksec_ctr = 'Bend%s%s%s' % (part, i, side)
                     if cmds.objExists(iksec_ctr):
                         attrs = ['v'] + ['s%s' % x for x in 'yz']
                         for attr in attrs:
                             cmds.setAttr('%s.%s' % (iksec_ctr, attr), e=True, l=True, k=False, cb=False)
+
     def correct_hand_cup(self):
         # 修正手掌无名指和小拇指缩放问题
         for side in self.adv_sides:
@@ -780,12 +781,13 @@ class AdvRigging(ChrRigging):
                     if cmds.nodeType(cons[0]) == 'joint':
                         cmds.disconnectAttr(cons[0], '%s.s' % ctrl_grp)
                         cmds.scaleConstraint(cons[0].split('.')[0], ctrl_grp, mo=True)
-    def editFootIKCtrlShape( self ):
+
+    def edit_foot_ik_ctrl_shape_backups(self):
         for side in self.adv_sides:
             if side == '_L':
-                sacleValue = -1
+                scaleValue = -1
             elif side == '_R':
-                sacleValue = 1
+                scaleValue = 1
             try:
                 frontCtrl = cmds.xform('RollToesEnd' + side, q=1, ws=1, t=1)
                 backCtrl = cmds.xform('RollHeel' + side, q=1, ws=1, t=1)
@@ -793,15 +795,21 @@ class AdvRigging(ChrRigging):
                 outsidePnt = cmds.xform('IKLegFootRockOuterPivot' + side, q=1, ws=1, t=1)
                 ctrlShape = cmds.listRelatives('IKLeg' + side, s=1, type='nurbsCurve')
             except Exception as e:
+                frontCtrl = None
+                backCtrl = None
+                insidePnt = None
+                outsidePnt = None
+                ctrlShape = None
                 print (e)
             if frontCtrl and backCtrl and insidePnt and outsidePnt and ctrlShape:
                 ctrlShape = ctrlShape[0]
+
                 # ctrlWIMatrix = pm.dt.Matrix(cmds.xform('IKLeg' + side, q=1, ws=1, m=1)).inverse()
                 # Apnt = pm.dt.Point(frontCtrl) * ctrlWIMatrix
                 # Bpnt = pm.dt.Point(backCtrl)
                 # Bpnt = pm.dt.Point(backCtrl) * ctrlWIMatrix
-                # Cpnt = pm.dt.Point([insidePnt[0],insidePnt[1],insidePnt[2]+1*sacleValue*0.02*self._mainSize_]) * ctrlWIMatrix
-                # Dpnt = pm.dt.Point([outsidePnt[0],outsidePnt[1],outsidePnt[2]-1*sacleValue*0.02*self._mainSize_]) * ctrlWIMatrix
+                # Cpnt = pm.dt.Point([insidePnt[0],insidePnt[1],insidePnt[2]+1*scaleValue*0.02*self._mainSize_]) * ctrlWIMatrix
+                # Dpnt = pm.dt.Point([outsidePnt[0],outsidePnt[1],outsidePnt[2]-1*scaleValue*0.02*self._mainSize_]) * ctrlWIMatrix
                 #
                 # setApnt = [cmds.setAttr(ctrlShape + '.cv[%s]' % (pnt), Bpnt[0], Apnt[1], Cpnt[2]) for pnt in
                 #            ['3', '6', '10', '11']]
@@ -812,58 +820,93 @@ class AdvRigging(ChrRigging):
                 # setDpnt = [cmds.setAttr(ctrlShape + '.cv[%s]' % (pnt), Bpnt[0], Bpnt[1], Dpnt[2]) for pnt in
                 #            ['0', '1', '8', '13']]
 
-
-                setApnt = [cmds.xform(ctrlShape + '.cv[%s]' % (pnt),
-                                      t=[insidePnt[0] + 1 * sacleValue * 0.02 * self._mainSize_, backCtrl[1],
+                setApnt = [cmds.xform(ctrlShape + '.cv[%s]' % pnt,
+                                      t=[insidePnt[0] + 1 * scaleValue * 0.02 * self._mainSize_, backCtrl[1],
                                          frontCtrl[2]], ws=1) for pnt in ['3', '6', '10', '11']]
-                setBpnt = [cmds.xform(ctrlShape + '.cv[%s]' % (pnt),
-                                      t=[outsidePnt[0] - 1 * sacleValue * 0.02 * self._mainSize_, backCtrl[1],
+                setBpnt = [cmds.xform(ctrlShape + '.cv[%s]' % pnt,
+                                      t=[outsidePnt[0] - 1 * scaleValue * 0.02 * self._mainSize_, backCtrl[1],
                                          frontCtrl[2]], ws=1) for pnt in
                            ['2', '7', '14', '15']]
-                setCpnt = [cmds.xform(ctrlShape + '.cv[%s]' % (pnt),
-                                      t=[insidePnt[0] + 1 * sacleValue * 0.02 * self._mainSize_, backCtrl[1],
+                setCpnt = [cmds.xform(ctrlShape + '.cv[%s]' % pnt,
+                                      t=[insidePnt[0] + 1 * scaleValue * 0.02 * self._mainSize_, backCtrl[1],
                                          backCtrl[2]], ws=1) for pnt in
                            ['4', '5', '9', '12']]
-                setDpnt = [cmds.xform(ctrlShape + '.cv[%s]' % (pnt),
-                                      t=[outsidePnt[0] - 1 * sacleValue * 0.02 * self._mainSize_, backCtrl[1],
+                setDpnt = [cmds.xform(ctrlShape + '.cv[%s]' % pnt,
+                                      t=[outsidePnt[0] - 1 * scaleValue * 0.02 * self._mainSize_, backCtrl[1],
                                          backCtrl[2]], ws=1) for pnt in
                            ['0', '1', '8', '13']]
 
-
-
+    def edit_foot_ik_ctrl_shape(self):
+        for side in self.adv_sides:
+            toe_end = 'RollToesEnd%s' % side
+            hell = 'RollHeel%s' % side
+            inside = 'IKLegFootRockInnerPivot%s' % side
+            outside = 'IKLegFootRockOuterPivot%s' % side
+            ctrl_shapes = cmds.listRelatives('IKLeg%s' % side, s=1, type='nurbsCurve')
+            if cmds.objExists(toe_end) and cmds.objExists(hell) and cmds.objExists(inside) and cmds.objExists(
+                    outside) and ctrl_shapes:
+                front_position = cmds.xform(toe_end, q=1, ws=1, t=1)
+                back_position = cmds.xform(hell, q=1, ws=1, t=1)
+                inside_position = cmds.xform(inside, q=1, ws=1, t=1)
+                outside_position = cmds.xform(outside, q=1, ws=1, t=1)
+                length = pow(
+                    pow(front_position[0] - back_position[0], 2) + 0 + pow(front_position[2] - back_position[2], 2),
+                    0.5) * 1.1
+                width = pow(
+                    pow(inside_position[0] - outside_position[0], 2) + 0 + pow(inside_position[2] - outside_position[2],
+                                                                               2), 0.5) * 1.2
+                plane, plane_shape = cmds.polyPlane(sx=1, sy=1, h=length, w=width)
+                cmds.setAttr('%s.tz' % plane, length * 0.5)
+                plane_grp = cmds.group(plane)
+                cmds.xform(plane_grp, ws=True, piv=[0, 0, 0])
+                cmds.delete(cmds.parentConstraint(hell, plane_grp, w=True, mo=False))
+                point1 = cmds.xform('%s.vtx[0]' % plane, q=True, ws=True, t=True)
+                point2 = cmds.xform('%s.vtx[1]' % plane, q=True, ws=True, t=True)
+                point3 = cmds.xform('%s.vtx[2]' % plane, q=True, ws=True, t=True)
+                point4 = cmds.xform('%s.vtx[3]' % plane, q=True, ws=True, t=True)
+                for index in [3, 6, 10, 11]:
+                    cmds.xform('%s.cv[%d]' % (ctrl_shapes[0], index), ws=True, t=point1)
+                for index in [4, 5, 9, 12]:
+                    cmds.xform('%s.cv[%d]' % (ctrl_shapes[0], index), ws=True, t=point2)
+                for index in [2, 7, 14, 15]:
+                    cmds.xform('%s.cv[%d]' % (ctrl_shapes[0], index), ws=True, t=point3)
+                for index in [0, 1, 8, 13]:
+                    cmds.xform('%s.cv[%d]' % (ctrl_shapes[0], index), ws=True, t=point4)
+                cmds.delete(plane_grp)
 
     def adv_rig_preset(self):
         # 针对于adv绑定的参数预设
         if cmds.objExists('%s.jointVis' % self.third_controller.controller):
             cmds.setAttr('%s.jointVis' % self.third_controller.controller, True)
             cmds.setAttr('%s.jointVis' % self.third_controller.controller, e=True, cb=False)
-    def adv_hiden_dirveJnt( self ):
-        if cmds.objExists('MotionSystem'):
-            [cmds.setAttr(i+'.drawStyle',2) for i in cmds.ls('MotionSystem',dag =1,type ='joint')]
 
-    def createfingerCtrl(self):
+    def adv_hiden_dirveJnt(self):
+        if cmds.objExists('MotionSystem'):
+            [cmds.setAttr(i + '.drawStyle', 2) for i in cmds.ls('MotionSystem', dag=1, type='joint')]
+
+    def create_finger_ctrl(self):
 
         for side in self.adv_sides:
             if cmds.objExists('Fingers' + side):
                 sideValue = 1
                 ctrlName = 'FKIKFingersMain' + side
                 if not cmds.objExists(ctrlName):
-                    ctr = cm.Controller(ctrlName, size=self._mainSize_*0.1, postfix='')
+                    ctr = controllerManager.Controller(ctrlName, size=self._mainSize_ * 0.1, postfix='')
                     ctr.create(9)
                     cmds.setAttr(ctrlName + '.lineWidth', 1.5)
                     cmds.setAttr(ctrlName + '.overrideEnabled', 1)
                     cmds.setAttr(ctrlName + '.overrideColor', 17)
-                    self.addSet(obj = ctrlName,set = 'AllSet')
-                    self.addSet(obj=ctrlName, set='ControlSet')
+                    self.add_to_set(obj=ctrlName, set='AllSet')
+                    self.add_to_set(obj=ctrlName, set='ControlSet')
 
                     newNameShape = cmds.listRelatives(ctrlName, type='nurbsCurve', ni=1) or []
                     if newNameShape:
-                        self.addSet(obj=newNameShape[0], set='AllSet')
+                        self.add_to_set(obj=newNameShape[0], set='AllSet')
                 ctrlGrpName = ctrlName + '_Grp'
                 if not cmds.objExists(ctrlGrpName):
                     cmds.group(n=ctrlGrpName, empty=1)
-                    self.addSet(obj = ctrlGrpName,set = 'AllSet')
-                    self.addSet(obj=ctrlGrpName, set='ControlSet')
+                    self.add_to_set(obj=ctrlGrpName, set='AllSet')
+                    self.add_to_set(obj=ctrlGrpName, set='ControlSet')
                 ctrlGrpChilden = cmds.listRelatives(ctrlGrpName, c=1) or []
                 if ctrlName not in ctrlGrpChilden:
                     cmds.parent(ctrlName, ctrlGrpName)
@@ -892,19 +935,21 @@ class AdvRigging(ChrRigging):
                                            part + side in cmds.listConnections(ctrl, d=0, s=1, type='transform')]
                         fingerIKFKswitchCtrlList += [cmds.listRelatives(
                             cmds.ls(
-                                cmds.listConnections(constraint + '.constraintRotateY', d=1, s=0, type='transform', et=1)[
+                                cmds.listConnections(constraint + '.constraintRotateY', d=1, s=0, type='transform',
+                                                     et=1)[
                                     0], s=1,
                                 dag=1)[0], p=1)[0] for constraint in wristConstraint]
                     fingerIKFKswitchCtrlList.sort()
                     FingersCtrl = 'Fingers' + side
                     if cmds.objExists(FingersCtrl):
                         cmds.setAttr('Fingers' + side + '.lodVisibility', 0)
-                        attrInfo = aa.AttrToolsClass.getAttrInfo(FingersCtrl,
-                                                                 cmds.listAttr(FingersCtrl, ud=1, k=1, l=0))
+                        attrInfo = attrTools.AttrToolsClass.getAttrInfo(FingersCtrl,
+                                                                        cmds.listAttr(FingersCtrl, ud=1, k=1, l=0))
                     else:
-                        attrInfo = {'None':[]}
+                        attrInfo = {'None': []}
                     attrInfo.values()[0].insert(0, {
-                        '___FK___': {'lock': True, 'cb': True, 'type': 'enum', 'enum': '__________', 'longName': '___FK___',
+                        '___FK___': {'lock': True, 'cb': True, 'type': 'enum', 'enum': '__________',
+                                     'longName': '___FK___',
                                      'key': False, 'niceName': '___FK___'}})
                     attrInfo.values()[0].append({'___FK_IK_FKIKBlend___': {'lock': True, 'cb': True, 'type': 'enum',
                                                                            'enum': '__________',
@@ -916,92 +961,88 @@ class AdvRigging(ChrRigging):
                                                          'type': u'float'}})
                      for ctrl in fingerIKFKswitchCtrlList]
 
-                    attrList = aa.AttrToolsClass.createAttrFn(ctrlName, attrInfo.values())
+                    attrList = attrTools.AttrToolsClass.createAttrFn(ctrlName, attrInfo.values())
                     for attr in attrList:
                         ctrlAttr = ctrlName + '.' + attr
                         if cmds.objExists(ctrlAttr):
 
                             cmds.addAttr(ctrlAttr, e=1, max=10)
-                            if cmds.objExists(FingersCtrl+ '.' + attr):
-                                self.updateBuildPose(ctrlAttr, value=0)
+                            if cmds.objExists(FingersCtrl + '.' + attr):
+                                self.update_build_pose(ctrlAttr, value=0)
                                 if attr == 'spread':
                                     cmds.addAttr(ctrlAttr, e=1, min=-5)
-                                    cmds.setDrivenKeyframe(FingersCtrl+'.'+attr, cd=ctrlAttr, dv=-5,
+                                    cmds.setDrivenKeyframe(FingersCtrl + '.' + attr, cd=ctrlAttr, dv=-5,
                                                            v=-5)
-                                    cmds.setDrivenKeyframe(FingersCtrl+'.'+attr, cd=ctrlAttr,
+                                    cmds.setDrivenKeyframe(FingersCtrl + '.' + attr, cd=ctrlAttr,
                                                            dv=10, v=10)
                                 elif attr == 'cup':
                                     cmds.addAttr(ctrlAttr, e=1, min=0)
-                                    cmds.setDrivenKeyframe(FingersCtrl+'.'+attr, cd=ctrlAttr, dv=0,
+                                    cmds.setDrivenKeyframe(FingersCtrl + '.' + attr, cd=ctrlAttr, dv=0,
                                                            v=0)
-                                    cmds.setDrivenKeyframe(FingersCtrl+'.'+attr, cd=ctrlAttr,
+                                    cmds.setDrivenKeyframe(FingersCtrl + '.' + attr, cd=ctrlAttr,
                                                            dv=10, v=10)
                                 elif attr in ['indexCurl', 'middleCurl', 'ringCurl', 'pinkyCurl', 'thumbCurl']:
                                     cmds.addAttr(ctrlAttr, e=1, min=-2)
-                                    cmds.setDrivenKeyframe(FingersCtrl+'.'+attr, cd=ctrlAttr, dv=-2,
+                                    cmds.setDrivenKeyframe(FingersCtrl + '.' + attr, cd=ctrlAttr, dv=-2,
                                                            v=-2)
-                                    cmds.setDrivenKeyframe(FingersCtrl+'.'+attr, cd=ctrlAttr,
+                                    cmds.setDrivenKeyframe(FingersCtrl + '.' + attr, cd=ctrlAttr,
                                                            dv=10, v=10)
                                 cmds.setDrivenKeyframe(FingersCtrl + '.' + attr, cd=ctrlAttr, dv=0,
                                                        v=0)
                             if cmds.objExists(attr + '.FKIKBlend'):
-                                self.updateBuildPose(ctrlAttr, value=0)
+                                self.update_build_pose(ctrlAttr, value=0)
                                 cmds.setDrivenKeyframe(attr + '.FKIKBlend', cd=ctrlAttr, dv=0,
                                                        v=0)
                                 cmds.setDrivenKeyframe(attr + '.FKIKBlend', cd=ctrlAttr,
                                                        dv=10, v=10)
                                 cmds.setAttr(attr + '.lodVisibility', 0)
 
-    def addSet( self,obj = '',set = '' ):
-        if not cmds.sets(obj,im=set):
+    def add_to_set(self, obj='', set=''):
+        if not cmds.sets(obj, im=set):
             cmds.sets(obj, addElement=set)
-    def updateBuildPose(self, attr='',type = 'value' ,value=0, buildPose='buildPose' ):
+
+    def update_build_pose(self, attr='', type='value', value=0, buildPose='buildPose'):
         if cmds.objExists(buildPose + '.udAttr'):
             oldAttrStr = str(cmds.getAttr(buildPose + '.udAttr'))
             if attr not in oldAttrStr:
                 if type == 'value':
-                    cmds.setAttr(buildPose+'.udAttr',oldAttrStr+';setAttr %s %s;'%(attr,value),type = 'string')
+                    cmds.setAttr(buildPose + '.udAttr', oldAttrStr + ';setAttr %s %s;' % (attr, value), type='string')
                 elif type == 'ctrl':
-                    cmds.setAttr(buildPose + '.udAttr', oldAttrStr + ';xform -os -t 0 0 0 -ro 0 0 0 -s 1 1 1 %s;' % attr,type = 'string')
-    def updateBuildPoseAndSetFn( self,name):
+                    cmds.setAttr(buildPose + '.udAttr',
+                                 oldAttrStr + ';xform -os -t 0 0 0 -ro 0 0 0 -s 1 1 1 %s;' % attr, type='string')
+
+    def update_build_pose_and_set_fn(self, name):
         newname = cmds.listRelatives(name[0], p=1) or []
-        newNameShape = cmds.listRelatives(newname,type = 'nurbsCurve',ni =1) or []
+        newNameShape = cmds.listRelatives(newname, type='nurbsCurve', ni=1) or []
         if newNameShape:
-            self.addSet(obj=newNameShape[0], set='AllSet')
-        self.addSet(obj=newname, set='AllSet')
-        self.addSet(obj=newname, set='ControlSet')
-        self.updateBuildPose(newname[0], type='ctrl')
+            self.add_to_set(obj=newNameShape[0], set='AllSet')
+        self.add_to_set(obj=newname, set='AllSet')
+        self.add_to_set(obj=newname, set='ControlSet')
+        self.update_build_pose(newname[0], type='ctrl')
         if newname == [] or newname == ['Group']:
             return 0
         else:
-            return (self.updateBuildPoseAndSetFn(newname))
+            return self.update_build_pose_and_set_fn(newname)
 
-    def fixUpdateBuildPoseAndSetFn( self ):
+    def fix_update_build_pose_and_set_fn(self):
+        self.add_to_set(obj=self.extra_group_name, set='AllSet')
+        self.add_to_set(obj=self.extra_group_name, set='ControlSet')
+        self.add_to_set(obj=self.facial_group_name, set='AllSet')
+        self.add_to_set(obj=self.facial_group_name, set='ControlSet')
+        self.add_to_set(obj=self.other_group_name, set='AllSet')
+        self.add_to_set(obj=self.other_group_name, set='ControlSet')
+        self.add_to_set(obj=self.geometry_group_name, set='AllSet')
+        self.add_to_set(obj=self.geometry_group_name, set='ControlSet')
+        self.add_to_set(obj=self.visibility_controller_name, set='AllSet')
+        self.add_to_set(obj=self.visibility_controller_name, set='ControlSet')
 
-        self.addSet(obj=self.extra_group_name, set='AllSet')
-        self.addSet(obj=self.extra_group_name, set='ControlSet')
+        self.add_to_set(obj='VisibilityCtrOft', set='AllSet')
+        self.add_to_set(obj='VisibilityCtrOft', set='ControlSet')
+        self.add_to_set(obj='VisibilityCtrExt', set='AllSet')
+        self.add_to_set(obj='VisibilityCtrShape', set='AllSet')
+        self.add_to_set(obj='VisibilityCtr', set='AllSet')
+        self.add_to_set(obj='VisibilityCtr', set='ControlSet')
 
-        self.addSet(obj=self.facial_group_name, set='AllSet')
-        self.addSet(obj=self.facial_group_name, set='ControlSet')
-
-        self.addSet(obj=self.other_group_name, set='AllSet')
-        self.addSet(obj=self.other_group_name, set='ControlSet')
-
-        self.addSet(obj=self.geometry_group_name, set='AllSet')
-        self.addSet(obj=self.geometry_group_name, set='ControlSet')
-
-        self.addSet(obj=self.visibility_controller_name, set='AllSet')
-        self.addSet(obj=self.visibility_controller_name, set='ControlSet')
-
-        self.addSet(obj='VisibilityCtrOft', set='AllSet')
-        self.addSet(obj='VisibilityCtrOft', set='ControlSet')
-
-        self.addSet(obj='VisibilityCtrExt', set='AllSet')
-
-        self.addSet(obj='VisibilityCtrShape', set='AllSet')
-
-        self.addSet(obj='VisibilityCtr', set='AllSet')
-        self.addSet(obj='VisibilityCtr', set='ControlSet')
     def adv_chr_correct(self):
         self.chr_correct()
         self.match_other_adv_groups()
@@ -1011,17 +1052,18 @@ class AdvRigging(ChrRigging):
         self.match_adv_vis_attrs()
         if self.adv_facial_rig:
             self.adv_facial_rig.do_facial_correct()
-        #self.main_scale_correct()
+        # self.main_scale_correct()
         self.main_scale_correctFn()
         self.lock_fk_translate()
         self.lock_ikSec_scale()
         self.adv_hiden_dirveJnt()
         self.correct_hand_cup()
-        self.editFootIKCtrlShape()
-        self.createfingerCtrl()
+        self.edit_foot_ik_ctrl_shape()
+        self.create_finger_ctrl()
         self.adv_rig_preset()
-        self.updateBuildPoseAndSetFn(['Main'])
-        self.fixUpdateBuildPoseAndSetFn()
+        self.update_build_pose_and_set_fn(['Main'])
+        self.fix_update_build_pose_and_set_fn()
+
     def adv_system_reset(self):
         if cmds.objExists('FitSkeleton') and cmds.objExists(self.third_controller_name):
             parent.fitParent('FitSkeleton', self.third_controller_name)
@@ -1070,8 +1112,8 @@ class AdvFacialRigging(object):
 
     def eye_region_correct(self):
         # 眼睛控制器修正
-        #transfer_attr_list = ['pupil', 'iris', 'blink', 'blinkCenter', 'upperLid', 'lowerLid', 'squint']
-        transfer_attr_list = ['upperLid', 'lowerLid','blink', 'blinkCenter',  'squint', 'iris','pupil']
+        # transfer_attr_list = ['pupil', 'iris', 'blink', 'blinkCenter', 'upperLid', 'lowerLid', 'squint']
+        transfer_attr_list = ['upperLid', 'lowerLid', 'blink', 'blinkCenter', 'squint', 'iris', 'pupil']
         for side in self.adv_sides:
             ctrl_box = 'ctrlEye%s' % side
             eye_ctrl = 'EyeRegion%s' % side
@@ -1167,10 +1209,11 @@ class AdvFacialRigging(object):
                 if not cmds.objExists(smile_ctr + '.' + 'zipLips'):
                     info = utils.transfer_connect_attrs('ctrlMouth_M', smile_ctr, ['zipLips%s' % side])
                     if 'zipLips%s' % side in info['success']:
-                            cmds.renameAttr(smile_ctr + '.' + 'zipLips%s' % side, 'zipLips')
+                        cmds.renameAttr(smile_ctr + '.' + 'zipLips%s' % side, 'zipLips')
+
     def add_teeth_ctrls(self):
         # 增加牙齿控制器
-        def add_single_ctr(part,key, position):
+        def add_single_ctr(part, key, position):
             # 创建骨骼和所需组别
             name = '%sTeeth_%s' % (part, key)
             joint_name = '%sJoint' % name
@@ -1195,11 +1238,11 @@ class AdvFacialRigging(object):
                 cmds.xform(control.groups[-1], ws=True, t=position)
                 # cmds.parentConstraint(control.curve, joint_name, w=True, mo=True)
                 # cmds.scaleConstraint(control.curve, joint_name, w=True)
-                cmds.connectAttr('%s.t'%control.curve,'%s.t'%joint_name,f =1)
-                cmds.connectAttr('%s.r' % control.curve, '%s.r' % joint_name,f =1)
-                cmds.connectAttr('%s.s' % control.curve, '%s.s' % joint_name,f =1)
+                cmds.connectAttr('%s.t' % control.curve, '%s.t' % joint_name, f=1)
+                cmds.connectAttr('%s.r' % control.curve, '%s.r' % joint_name, f=1)
+                cmds.connectAttr('%s.s' % control.curve, '%s.s' % joint_name, f=1)
                 return [joint_oft, control.groups[-1]]
-            return [joint_oft, controller_name+'Oft']
+            return [joint_oft, controller_name + 'Oft']
 
         left_position = cmds.xform('SmilePull_L', q=True, ws=True, t=True)
         right_position = cmds.xform('SmilePull_R', q=True, ws=True, t=True)
@@ -1232,8 +1275,8 @@ class AdvFacialRigging(object):
                 for constraint in parentConstraints:
                     parentList = cmds.parentConstraint(constraint, query=True, targetList=True)
                     for parentNode in parentList:
-                        if parentNode == '%sTeeth_M'%part:
-                            jntGrp = '%sTeethJoint_M_TraGrp'% part
+                        if parentNode == '%sTeeth_M' % part:
+                            jntGrp = '%sTeethJoint_M_TraGrp' % part
                             if not cmds.objExists(jntGrp):
                                 cmds.createNode('transform', n=jntGrp)
                                 cmds.delete(cmds.parentConstraint('%sTeethJoint_M' % part, jntGrp))
@@ -1242,34 +1285,35 @@ class AdvFacialRigging(object):
 
                                 cmds.delete(constraint)
                                 ctrlMouth_MPnt = cmds.xform(pntCtrl, q=1, ws=1, t=1)
-                                cmds.xform('%sTeethOffset_M'%part, ws=1, t=[ctrlMouth_MPnt[0],ctrlMouth_MPnt[1],ctrlMouth_MPnt[2]])
+                                cmds.xform('%sTeethOffset_M' % part, ws=1,
+                                           t=[ctrlMouth_MPnt[0], ctrlMouth_MPnt[1], ctrlMouth_MPnt[2]])
 
-                                cmds.parentConstraint('%sTeeth_M' % part,jntGrp,mo =1)
+                                cmds.parentConstraint('%sTeeth_M' % part, jntGrp, mo=1)
 
-
-        #移出舌头控制器
-        for v in [0,1,2,3]:
-            jnt = 'Tongue%sJoint_M'%v
-            parentConstraints = cmds.listRelatives(jnt, type=['parentConstraint','pointConstraint','orientConstraint'])
+        # 移出舌头控制器
+        for v in [0, 1, 2, 3]:
+            jnt = 'Tongue%sJoint_M' % v
+            parentConstraints = cmds.listRelatives(jnt,
+                                                   type=['parentConstraint', 'pointConstraint', 'orientConstraint'])
             if parentConstraints:
                 for constraint in parentConstraints:
                     parentList = cmds.parentConstraint(constraint, query=True, targetList=True)
                     for parentNode in parentList:
-                        if parentNode == 'Tongue%s_M'%v:
+                        if parentNode == 'Tongue%s_M' % v:
                             cmds.delete(constraint)
         ctrlMouth_MPnt = cmds.xform('ctrlMouth_M', q=1, ws=1, t=1)
         ctrlPhonemes_M_MPnt = cmds.xform('ctrlPhonemes_M', q=1, ws=1, t=1)
         TonguePnt = [ctrlMouth_MPnt[0], (ctrlMouth_MPnt[1] + ctrlPhonemes_M_MPnt[1]) * 0.5, ctrlMouth_MPnt[2]]
         cmds.xform('Tongue0Offset_M', ws=1, t=TonguePnt)
         for v in [0, 1, 2, 3]:
-            ctrl = 'Tongue%s_M'%v
-            jnt= 'Tongue%sJoint_M'%v
-            jntGrp = cmds.listRelatives(jnt,p =1)[0]
-            cmds.xform(jntGrp,ws =1,t = cmds.xform(jnt,ws =1,t =1,q =1))
+            ctrl = 'Tongue%s_M' % v
+            jnt = 'Tongue%sJoint_M' % v
+            jntGrp = cmds.listRelatives(jnt, p=1)[0]
+            cmds.xform(jntGrp, ws=1, t=cmds.xform(jnt, ws=1, t=1, q=1))
             cmds.xform(jntGrp, ws=1, ro=cmds.xform(jnt, ws=1, ro=1, q=1))
-            cmds.xform(jntGrp,  s=cmds.xform(jnt, s=1, q=1))
+            cmds.xform(jntGrp, s=cmds.xform(jnt, s=1, q=1))
             try:
-                cmds.setAttr(jnt+'.t',0,0,0)
+                cmds.setAttr(jnt + '.t', 0, 0, 0)
                 cmds.setAttr(jnt + '.r', 0, 0, 0)
                 cmds.setAttr(jnt + '.s', 1, 1, 1)
             except:
@@ -1279,11 +1323,9 @@ class AdvFacialRigging(object):
                 cmds.connectAttr('%s.r' % ctrl, '%s.r' % jnt, f=1)
             else:
                 cmds.parentConstraint(ctrl, jnt, mo=1)
-                #cmds.orientConstraint(ctrl, jnt, mo=1)
-            cmds.scaleConstraint(ctrl,jnt,mo =1)
+                # cmds.orientConstraint(ctrl, jnt, mo=1)
+            cmds.scaleConstraint(ctrl, jnt, mo=1)
             # cmds.orientConstraint(ctrl,jnt,mo =1)
-
-
 
     def eye_iris_correct(self):
         # 当前版本暂时未发现问题
@@ -1298,6 +1340,7 @@ class AdvFacialRigging(object):
         if cmds.objExists('ctrlBoxOffset'):
             cmds.setAttr('ctrlBoxOffset.v', False)
         self.eye_iris_correct()
+
 
 def chr_correct(**kwargs):
     rig = None
@@ -1317,66 +1360,3 @@ def correct(**kwargs):
     :return:
     """
     chr_correct(**kwargs)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
