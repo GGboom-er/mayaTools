@@ -638,7 +638,8 @@ class AdvRigging(ChrRigging):
     def adv_facial_rig(self):
         if cmds.objExists(self.adv_face_group):
             if not self.__adv_facial_rig:
-                self.__adv_facial_rig = AdvFacialRigging(av=self.adv_version, afg=self.adv_face_group)
+                self.__adv_facial_rig = AdvFacialRigging(av=self.adv_version, afg=self.adv_face_group,
+                                                         ms=self._mainSize_)
         return self.__adv_facial_rig
 
     @property
@@ -1081,6 +1082,7 @@ class AdvFacialRigging(object):
     def __init__(self, **kwargs):
         self.__adv_version = kwargs.get('adv_version', kwargs.get('av', '5.74'))
         self.__adv_face_group = kwargs.get('adv_face_group', kwargs.get('afg', 'FaceGroup'))
+        self._mainSize_ = kwargs.get('main_size', kwargs.get('ms', 1))
 
     @property
     def adv_versio(self):
@@ -1211,6 +1213,75 @@ class AdvFacialRigging(object):
                     if 'zipLips%s' % side in info['success']:
                         cmds.renameAttr(smile_ctr + '.' + 'zipLips%s' % side, 'zipLips')
 
+    def mouth_controller_offset(self):
+        # 上下牙控制器调整
+        main_offset_list = []
+        for part in ['upper', 'lower']:
+            teeth_ctr = '%sTeeth_M' % part
+            teeth_ctr_oft = '%sTeethOffset_M' % part
+            if cmds.objExists(teeth_ctr_oft) and cmds.objExists(teeth_ctr):
+                par = cmds.listRelatives(teeth_ctr_oft, p=True)
+                cmds.rename(teeth_ctr_oft, 'con_%s' % teeth_ctr_oft)
+                cmds.rename(teeth_ctr, 'con_%s' % teeth_ctr)
+                cmds.createNode('transform', n=teeth_ctr_oft)
+                if par:
+                    parent.fitParent(teeth_ctr_oft, par[0])
+                for attr in 'trs':
+                    values = cmds.getAttr('con_%s.%s' % (teeth_ctr_oft, attr))[0]
+                    cmds.setAttr('%s.%s' % (teeth_ctr_oft, attr), *values, typ='double3')
+                cmds.duplicate('con_%s' % teeth_ctr, n=teeth_ctr)
+                parent.fitParent(teeth_ctr, teeth_ctr_oft)
+                for attr in 'trs':
+                    cmds.connectAttr('%s.%s' % (teeth_ctr, attr), 'con_%s.%s' % (teeth_ctr, attr), f=True)
+                main_offset_list.append(teeth_ctr_oft)
+
+        # 舌头控制器调整
+        tongue_par = None
+        i = 0
+        while True:
+            tongue_ctr = 'Tongue%d_M' % i
+            if not cmds.objExists(tongue_ctr):
+                break
+            tongue_sdk = 'SDKTongue%d_M' % i
+            tongue_rever = 'Tongue%dSideReverse_M' % i
+            tongue_offset = 'Tongue%dOffset_M' % i
+            for item in [tongue_offset, tongue_rever, tongue_sdk, tongue_ctr]:
+                if cmds.objExists(item):
+                    judge = True
+                    if not tongue_par:
+                        tongue_par = cmds.listRelatives(item, p=True)[0]
+                        judge = False
+                        main_offset_list.append(item)
+                    cmds.rename(item, 'con_%s' % item)
+                    if item == tongue_ctr:
+                        cmds.circle(n=item, ch=False, nr=[1, 0, 0])
+                        shape = cmds.listRelatives(item, s=True)
+                        cmds.setAttr('%s.ove' % shape[0], True)
+                        cmds.setAttr('%s.ovc' % shape[0], 23)
+                    else:
+                        cmds.createNode('transform', n=item)
+                    cmds.parent(item, tongue_par)
+                    for attr in 'trs':
+                        values = cmds.getAttr('con_%s.%s' % (item, attr))[0]
+                        cmds.setAttr('%s.%s' % (item, attr), *values, typ='double3')
+                    # 属性关联
+                    s_cons = cmds.listConnections('con_%s' % item, s=True, d=False, p=True) or []
+                    for con in s_cons:
+                        d_cons = cmds.listConnections(con, s=False, d=True, p=True) or []
+                        for d_con in d_cons:
+                            cmds.connectAttr(con, d_con.replace('con_', ''), f=True)
+                            cmds.disconnectAttr(con, d_con)
+                    if judge:
+                        for attr in 'trs':
+                            cmds.connectAttr('%s.%s' % (item, attr), 'con_%s.%s' % (item, attr), f=True)
+                    tongue_par = item
+            i += 1
+
+        for item in main_offset_list:
+            cmds.setAttr('con_%s.lodVisibility' % item, 0)
+            # cmds.setAttr('%s.tx' % item, 15)
+        return main_offset_list
+
     def add_teeth_ctrls(self):
         # 增加牙齿控制器
         def add_single_ctr(part, key, position):
@@ -1227,7 +1298,6 @@ class AdvFacialRigging(object):
             # 创建控制器
             controller_name = '%sCtr' % name
             if not cmds.objExists(controller_name):
-
                 if part == 'upper':
                     colorList = [0.7, 0.2, 0.2]
                 if part == 'lower':
@@ -1290,56 +1360,73 @@ class AdvFacialRigging(object):
 
                                 cmds.parentConstraint('%sTeeth_M' % part, jntGrp, mo=1)
 
-        # 移出舌头控制器
-        for v in [0, 1, 2, 3]:
-            jnt = 'Tongue%sJoint_M' % v
-            parentConstraints = cmds.listRelatives(jnt,
-                                                   type=['parentConstraint', 'pointConstraint', 'orientConstraint'])
-            if parentConstraints:
-                for constraint in parentConstraints:
-                    parentList = cmds.parentConstraint(constraint, query=True, targetList=True)
-                    for parentNode in parentList:
-                        if parentNode == 'Tongue%s_M' % v:
-                            cmds.delete(constraint)
-        ctrlMouth_MPnt = cmds.xform('ctrlMouth_M', q=1, ws=1, t=1)
-        ctrlPhonemes_M_MPnt = cmds.xform('ctrlPhonemes_M', q=1, ws=1, t=1)
-        TonguePnt = [ctrlMouth_MPnt[0], (ctrlMouth_MPnt[1] + ctrlPhonemes_M_MPnt[1]) * 0.5, ctrlMouth_MPnt[2]]
-        cmds.xform('Tongue0Offset_M', ws=1, t=TonguePnt)
-        for v in [0, 1, 2, 3]:
-            ctrl = 'Tongue%s_M' % v
-            jnt = 'Tongue%sJoint_M' % v
-            jntGrp = cmds.listRelatives(jnt, p=1)[0]
-            cmds.xform(jntGrp, ws=1, t=cmds.xform(jnt, ws=1, t=1, q=1))
-            cmds.xform(jntGrp, ws=1, ro=cmds.xform(jnt, ws=1, ro=1, q=1))
-            cmds.xform(jntGrp, s=cmds.xform(jnt, s=1, q=1))
-            try:
-                cmds.setAttr(jnt + '.t', 0, 0, 0)
-                cmds.setAttr(jnt + '.r', 0, 0, 0)
-                cmds.setAttr(jnt + '.s', 1, 1, 1)
-            except:
-                pass
-            if v != 0:
-                cmds.connectAttr('%s.t' % ctrl, '%s.t' % jnt, f=1)
-                cmds.connectAttr('%s.r' % ctrl, '%s.r' % jnt, f=1)
-            else:
-                cmds.parentConstraint(ctrl, jnt, mo=1)
-                # cmds.orientConstraint(ctrl, jnt, mo=1)
-            cmds.scaleConstraint(ctrl, jnt, mo=1)
-            # cmds.orientConstraint(ctrl,jnt,mo =1)
-
     def eye_iris_correct(self):
         # 当前版本暂时未发现问题
         pass
+
+    def correct_sub_facial(self):
+        items = [u'EyeBrowMid2Offset_R',
+                 u'EyeBrowMid3Offset_R',
+                 u'EyeBrowMid1Offset_R',
+                 u'EyeBrowOuterOffset_R',
+                 u'EyeBrowMid2Offset_L',
+                 u'EyeBrowMid1Offset_L',
+                 u'EyeBrowMid3Offset_L',
+                 u'EyeBrowOuterOffset_L',
+                 u'NoseCornerOffset_R',
+                 u'NoseOffset_M',
+                 u'NoseCornerOffset_L',
+                 u'NostrilOffset_R',
+                 u'NostrilOffset_L',
+                 u'upperOuterLidOffset_R',
+                 u'lowerOuterLidOffset_R',
+                 u'lowerInnerLidOffset_R',
+                 u'upperInnerLidOffset_L',
+                 u'upperOuterLidOffset_L',
+                 u'lowerInnerLidOffset_L',
+                 u'lowerOuterLidOffset_L',
+                 u'upperInnerLidOffset_R',
+                 u'innerLidDroopyOffset_R',
+                 u'outerLidDroopyOffset_R',
+                 u'upperLidDroopyOffset_R',
+                 u'upperInnerLidDroopyOffset_R',
+                 u'upperOuterLidDroopyOffset_R',
+                 u'lowerLidDroopyOffset_R',
+                 u'lowerInnerLidDroopyOffset_R',
+                 u'lowerOuterLidDroopyOffset_R',
+                 u'NoseMiddleOffset_M',
+                 u'lowerOuterLidDroopyOffset_L',
+                 u'NoseSideOffset_L',
+                 u'NoseSideOffset_R',
+                 u'innerLidOffset_R',
+                 u'outerLidOffset_R',
+                 u'innerLidOffset_L',
+                 u'outerLidOffset_L',
+                 u'innerLidDroopyOffset_L',
+                 u'outerLidDroopyOffset_L',
+                 u'upperLidDroopyOffset_L',
+                 u'upperInnerLidDroopyOffset_L',
+                 u'upperOuterLidDroopyOffset_L',
+                 u'lowerLidDroopyOffset_L',
+                 u'lowerInnerLidDroopyOffset_L',
+                 u'NoseUnderOffset_M']
+        if cmds.objExists('VisibilityCtr.sub_facial_sys_vis'):
+            for item in items:
+                cmds.connectAttr('VisibilityCtr.sub_facial_sys_vis', '%s.v' % item, f=True)
 
     def do_facial_correct(self):
         self.eye_brow_inner_correct()
         self.eye_region_correct()
         self.lip_region_correct()
         self.smile_pull_correct()
+        main_offset_list = self.mouth_controller_offset()
         self.add_teeth_ctrls()
         if cmds.objExists('ctrlBoxOffset'):
             cmds.setAttr('ctrlBoxOffset.v', False)
         self.eye_iris_correct()
+        self.correct_sub_facial()
+        for item in main_offset_list:
+            cmds.setAttr('%s.tx' % item, 15 * self._mainSize_)
 
 
 def chr_correct(**kwargs):
