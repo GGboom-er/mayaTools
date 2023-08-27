@@ -46,7 +46,6 @@ class EditNgTools(object):
         {jointIndex:[vtx1,vtx2,vtx3]}
         :return: skinCluster weight
         '''
-        print self.mesh
         self._skinInfluencesInfo = EditNgTools.getSkinClusterInfo(self.mesh)
         return self._skinInfluencesInfo
 
@@ -157,19 +156,14 @@ class EditNgTools(object):
         skininfo = self.skinInfluences
         layerNameListList = [layer.name for layer in self.layers.list()]
         jntIndex = {i.path: i.logicalIndex for i in self.layers.list_influences()}
-
-        layerDict = {jnt.split('|')[-1]: self.addLayer(jnt.split('|')[-1], {jntIndex[jnt]: [1] * self.mesh.numVertices})
-                     for jnt in jointNameList if jnt.split('|')[-1]
-                     not in layerNameListList}
-        setMaskWeight = [(layer.set_weights('mask', skininfo[layer.get_used_influences()[0]]), layer.reload()) for layer
-                         in self.layers.list()]
-
-        for jnt in jointNameList:
-            try:
-                layerDict[jnt.split('|')[-1]].parent = layerDict[jnt.split('|')[-2]]
-            except:
-                pass
-
+        for jnt in sorted(jointNameList):
+            if jnt.split('|')[-1] not in layerNameListList:
+                layerName = self.addLayer(jnt.split('|')[-1], {jntIndex[jnt]: [1] * self.mesh.numVertices})
+                jntSkinList = [0] * self.mesh.numVertices
+                skinList = [skininfo[jntIndex[i]] for i in mc.ls(jnt, dag = 1, l = 1,type ='joint') if i in jointNameList]
+                for i in skinList:
+                    jntSkinList = [x+y for x,y in zip(i,jntSkinList)]
+                self.editLayerMask(layerName,'mask',jntSkinList)
     @staticmethod
     def export( info, path, type='json' ):
         with open(path + '.' + type, "w") as f:
