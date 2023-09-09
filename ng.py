@@ -16,11 +16,12 @@ class EditNgTools(object):
     '''
 
     def __init__( self, mesh=None ):
+
         selection_list = om.MSelectionList()
         selection_list.add(mesh)
         dag_path = selection_list.getDagPath(0)
         self._mesh = om.MFnMesh(dag_path)
-
+        self.maskSkinInfo = dict()
         self._skinInfluencesInfo = dict()
         if not self.layers.list():
             self.layers.add("base weights")
@@ -35,30 +36,43 @@ class EditNgTools(object):
         selection_list.add(name)
         dag_path = selection_list.getDagPath(0)
         self._mesh = om.MFnMesh(dag_path)
-
     @property
     def layers( self ):
         return api.layers.init_layers(self.mesh.fullPathName())
 
     @property
-    def skinInfluences( self ):
+    def skinInfluencesInfo( self ):
         '''
         {jointIndex:[vtx1,vtx2,vtx3]}
         :return: skinCluster weight
         '''
-        self._skinInfluencesInfo = EditNgTools.getSkinClusterInfo(self.mesh)
+        self._skinInfluencesInfo = {i.path: (i.logicalIndex,self.layers.list()[0].get_weights(i.logicalIndex)) for i in self.layers.list_influences()} or {}
         return self._skinInfluencesInfo
 
-    @skinInfluences.setter
-    def skinInfluences( self, layer ):
-        influences = api.list_influences(self.mesh.fullPathName())
-        self._skinInfluencesInfo = dict()
-        for i in influences:
-            self._skinInfluencesInfo[i.logicalIndex] = layer.get_weights(i.logicalIndex)
 
     @property
-    def jointList( self ):
-        return self.layers.list_influences()
+    def jointInfo( self ):
+        '''
+        return {jointName:jointIndex}
+        '''
+        return
+    def editWeights(self):
+        jointList = self.jointInfo.keys()
+        while jointList:
+            jointName = jointList.pop(0)
+            self.getChildWeight(jointName)
+    def getChildWeight(self,jointName):
+        childJointList = mc.listRelatives(jointName, c = 1, type = 'joint') or []
+        if not childJointList:
+            # end joint
+            self.maskSkinInfo[jointName] = self.jointInfo.keys()[jointName]
+        else:
+            for childJoint in childJointList:
+                if childJoint in self.jointInfo.keys():
+                    if childJoint not in self.maskSkinInfo.keys():
+                        self.getChildWeight(childJoint)
+                    else:
+                        pass
 
     def layersInfo( self ):
         layersAllDict = dict()
@@ -76,8 +90,8 @@ class EditNgTools(object):
             layersDict['effects'] = {'mirrorMask'   : layer.effects.mirror_mask,
                                      'mirrorWeights': layer.effects.mirror_weights,
                                      'mirrorDq'     : layer.effects.mirror_dq}
-            self.skinInfluences = layer
-            layersDict['influences'] = self._skinInfluencesInfo
+            # self.skinInfluences = layer
+            layersDict['influences'] = self.skinInfluencesInfo
             layersAllDict['layers'].append(layersDict)
         return layersAllDict
 
@@ -152,15 +166,12 @@ class EditNgTools(object):
             pass
 
     def buildLayer( self ):
-        jointNameList = [jnt.path_name() for jnt in self.jointList]
-        skininfo = self.skinInfluences
         layerNameListList = [layer.name for layer in self.layers.list()]
-        jntIndex = {i.path: i.logicalIndex for i in self.layers.list_influences()}
-        for jnt in sorted(jointNameList):
+        for jnt in sorted(self.skinInfluencesInfo.keys()):
             if jnt.split('|')[-1] not in layerNameListList:
-                layerName = self.addLayer(jnt.split('|')[-1], {jntIndex[jnt]: [1] * self.mesh.numVertices})
+                layerName = self.addLayer(jnt.split('|')[-1], {self._skinInfluencesInfo[jnt][0]: [1] * self.mesh.numVertices})
                 jntSkinList = [0] * self.mesh.numVertices
-                skinList = [skininfo[jntIndex[i]] for i in mc.ls(jnt, dag = 1, l = 1,type ='joint') if i in jointNameList]
+                skinList = [self._skinInfluencesInfo[i][1] for i in mc.ls(jnt, dag = 1, l = 1,type ='joint') if i in self._skinInfluencesInfo.keys()]
                 for i in skinList:
                     jntSkinList = [x+y for x,y in zip(i,jntSkinList)]
                 self.editLayerMask(layerName,'mask',jntSkinList)
@@ -168,21 +179,3 @@ class EditNgTools(object):
     def export( info, path, type='json' ):
         with open(path + '.' + type, "w") as f:
             json.dump(info, f, sort_keys=True, separators=(',', ':\n'))
-
-    @staticmethod
-    def getSkinClusterInfo( mesh ):
-        weightInfo = dict()
-        if pm.mel.findRelatedSkinCluster(mesh.name()):
-            sel = om.MSelectionList()
-            sel.add(pm.mel.findRelatedSkinCluster(mesh.name()))
-            skinClusterNode = omAnim.MFnSkinCluster(sel.getDependNode(0))
-            influeceList = skinClusterNode.influenceObjects()
-            comp_ids = [c for c in range(mesh.numVertices)]
-            single_fn = om.MFnSingleIndexedComponent()
-            shape_comp = single_fn.create(om.MFn.kMeshVertComponent)
-            single_fn.addElements(comp_ids)
-            for i in range(influeceList.__len__()):
-                info = skinClusterNode.getWeights(mesh.dagPath(), shape_comp, i)
-                # weightInfo[str(i)] = [info[v] for v in range(info.__len__())]
-                weightInfo[i] = list(info)
-        return weightInfo
