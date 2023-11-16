@@ -54,22 +54,32 @@ def getFaceIDbyMouseCursor( mesh_name ):
             cmds.warning('No mesh')
 
 
+
 def getMaxInfluenceByFace( face_id, skin_name ):
     vertex_list = cmds.polyListComponentConversion(face_id, ff=True, tv=True)
     vertex_list_fl = cmds.ls(vertex_list, fl=True)
     max_inf = []
+    influence = cmds.skinPercent(skin_name, face_id, query=True, t=None)
     for ii in range(len(vertex_list_fl)):
-        influence = cmds.skinPercent(skin_name, vertex_list_fl[ii], query=True, t=None)
         value = cmds.skinPercent(skin_name, vertex_list_fl[ii], query=True, v=1)
         max_inf.append(influence[value.index(max(value))])
     return list(set(max_inf))[0]
-
-
+def editSkinWeightTools():
+    currentContext = cmds.currentCtx()
+    if currentContext != 'artAttrSkinContext':
+       mel.eval('ArtPaintSkinWeightsToolOptions')
+    paintOperation = cmds.artAttrSkinPaintCtx('artAttrSkinContext', query=True, sao=True)
+    if paintOperation=='additive':
+        cmds.artAttrSkinPaintCtx('artAttrSkinContext',e =1, sao='absolute')
+        cmds.artAttrSkinPaintCtx('artAttrSkinContext',e =1, val=1.0)
+    elif paintOperation=='absolute':
+        cmds.artAttrSkinPaintCtx('artAttrSkinContext',e =1, sao='additive')
+        cmds.artAttrSkinPaintCtx('artAttrSkinContext',e =1, val=0.025)
 def callPaintListWindowWithSetInfluence( max_inf ):
     mel.eval('artSkinInflListChanging "{0}" 1'.format(max_inf))
-    mel.eval('artSkinInflListChanged artAttrSkinPaintCtx;')
+    mel.eval('artSkinInflListChanged artAttrSkinPaintCtx')
+    mel.eval('artSkinRevealSelected artAttrSkinPaintCtx')
     cmds.headsUpMessage('{0}'.format(max_inf), t=1)
-
 
 def UseInfluenceSetSkinList( mesh_name ):
     face_id = getFaceIDbyMouseCursor(mesh_name)
@@ -78,19 +88,20 @@ def UseInfluenceSetSkinList( mesh_name ):
         if skin:
             max_inf = getMaxInfluenceByFace(face_id, skin)
             if cmds.treeView('theSkinClusterInflList', q=True, ex=True) == False:
-                mel.eval('ArtPaintSkinWeightsToolOptions')
+                editSkinWeightTools()
                 callPaintListWindowWithSetInfluence(max_inf)
             else:
                 if cmds.treeView('theSkinClusterInflList', q=True, io=True) == True:
-                    mel.eval('ArtPaintSkinWeightsToolOptions')
+                    editSkinWeightTools()
                     callPaintListWindowWithSetInfluence(max_inf)
                 else:
+                    editSkinWeightTools()
                     callPaintListWindowWithSetInfluence(max_inf)
 
 
 def mainFunc():
     mesh = cmds.ls(sl=True)
-    if mesh:
+    if mesh and cmds.nodeType(cmds.listRelatives(mesh[0],s =1,ni =1)) == 'mesh':
         if '.' not in mesh[0]:
             UseInfluenceSetSkinList(mesh[0])
         else:
