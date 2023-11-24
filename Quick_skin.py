@@ -10,7 +10,7 @@ from PySide2 import QtGui
 def getScenePos():
     view = omui.M3dView.active3dView()
     view_height = view.portHeight()
-    QWidget_view = shiboken2.wrapInstance(long(view.widget()), QtWidgets.QWidget)
+    QWidget_view = shiboken2.wrapInstance(int(view.widget()), QtWidgets.QWidget)
     global_pos = QtGui.QCursor.pos()
     local_pos = QWidget_view.mapFromGlobal(global_pos)
     return local_pos.x(), view_height - local_pos.y()
@@ -78,7 +78,6 @@ def editSkinWeightTools():
 def callPaintListWindowWithSetInfluence( max_inf ):
     mel.eval('artSkinInflListChanging "{0}" 1'.format(max_inf))
     mel.eval('artSkinInflListChanged artAttrSkinPaintCtx')
-    mel.eval('artSkinRevealSelected artAttrSkinPaintCtx')
     cmds.headsUpMessage('{0}'.format(max_inf), t=1)
 
 def UseInfluenceSetSkinList( mesh_name ):
@@ -94,15 +93,18 @@ def UseInfluenceSetSkinList( mesh_name ):
                 if cmds.treeView('theSkinClusterInflList', q=True, io=True) == True:
                     editSkinWeightTools()
                     callPaintListWindowWithSetInfluence(max_inf)
+                    mel.eval('artSkinRevealSelected artAttrSkinPaintCtx')
+
                 else:
                     editSkinWeightTools()
                     callPaintListWindowWithSetInfluence(max_inf)
+                    mel.eval('artSkinRevealSelected artAttrSkinPaintCtx')
 
 
 def mainFunc():
     mesh = cmds.ls(sl=True)
-    if mesh and cmds.nodeType(cmds.listRelatives(mesh[0],s =1,ni =1)) == 'mesh':
-        if '.' not in mesh[0]:
+    if mesh:
+        if '.' not in mesh[0] and cmds.nodeType(cmds.listRelatives(mesh[0],s =1,ni =1)) == 'mesh':
             UseInfluenceSetSkinList(mesh[0])
         else:
             name = mesh[0].split('.')[0]
