@@ -142,7 +142,7 @@ def reset_meshes_render_attrs():
             for attr, value in attrs.items():
                 cmds.setAttr('%s.%s' % (mesh, attr), value)
 
-def transfer_connect_attrs(base, target, attrs):
+def transfer_connect_attrs(base, target, attrs,defaultMode = False):
     """
     检测并连接两个控制器的属性
     :param base: 基础物体
@@ -150,29 +150,34 @@ def transfer_connect_attrs(base, target, attrs):
     :param attrs: 属性列表
     :return:
     """
-    infos = {'success': [], 'failed': []}
+    infos = {
+        'success': [],
+        'failed' : []}
     for attr in attrs:
         if cmds.objExists('%s.%s' % (base, attr)):
             default_value = cmds.getAttr('%s.%s' % (base, attr))
-            attr_args = {'ln': attr,
-                         'at': cmds.attributeQuery(attr, node=base, at=True)
-                         }
+            attr_args = {
+                'ln': attr,
+                'at': cmds.attributeQuery(attr, node=base, at=True)}
+            if defaultMode:
+                attr_args['dv'] = default_value
+            if cmds.attributeQuery(attr, node=base, sxe=True):
+                attr_args['smx'] = cmds.attributeQuery(attr, node=base, smx=True)[0]
             if cmds.attributeQuery(attr, node=base, mxe=True):
                 attr_args['max'] = cmds.attributeQuery(attr, node=base, max=True)[0]
-            elif cmds.attributeQuery(attr, node=base, sxe=True):
-                attr_args['max'] = cmds.attributeQuery(attr, node=base, smx=True)[0]
+            if cmds.attributeQuery(attr, node=base, sme=True):
+                attr_args['smn'] = cmds.attributeQuery(attr, node=base, smn=True)[0]
             if cmds.attributeQuery(attr, node=base, mne=True):
                 attr_args['min'] = cmds.attributeQuery(attr, node=base, min=True)[0]
-            elif cmds.attributeQuery(attr, node=base, sme=True):
-                attr_args['min'] = cmds.attributeQuery(attr, node=base, smn=True)[0]
             if not cmds.objExists('%s.%s' % (target, attr)):
                 cmds.addAttr(target, **attr_args)
             cmds.setAttr('%s.%s' % (target, attr), e=True, l=False, k=True)
             cmds.setAttr('%s.%s' % (target, attr), default_value)
             cmds.connectAttr('%s.%s' % (target, attr), '%s.%s' % (base, attr), f=True)
             infos['success'].append(attr)
-        else:
-            infos['failed'].append(attr)
+            continue
+        infos['failed'].append(attr)
+
     return infos
 
 
