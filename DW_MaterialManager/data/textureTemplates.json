@@ -1,0 +1,123 @@
+{
+  "Redshift": {
+    "primaryMetalness": "none", 
+    "diffuseColor": "Diffuse", 
+    "bump": "Normal", 
+    "pureColor": "Emissive", 
+    "height": "Height", 
+    "primaryReflectionF0": "f0", 
+    "primaryReflectionColor": "Reflection", 
+    "primaryReflectionGlossiness": "Glossiness", 
+    "primaryReflectionIOR": "none"
+  }, 
+  "Default": {
+    "primaryMetalness": "primaryMetalness", 
+    "diffuseColor": "diffuse", 
+    "bump": "bump", 
+    "pureColor": "pureColor", 
+    "height": "height", 
+    "primaryReflectionF0": "primaryReflectionF0", 
+    "primaryReflectionColor": "primaryReflectionColor", 
+    "primaryReflectionGlossiness": "primaryReflectionGlossiness", 
+    "primaryReflectionIOR": "primaryReflectionIOR"
+  }, 
+  "PBR_MetalRough": {
+    "primaryMetalness": "Metallic", 
+    "diffuseColor": "BaseColor", 
+    "bump": "Normal", 
+    "pureColor": "Emissive", 
+    "height": "Height", 
+    "primaryReflectionF0": "none", 
+    "primaryReflectionColor": "none", 
+    "primaryReflectionGlossiness": "Roughness", 
+    "primaryReflectionIOR": "none"
+  }, 
+  "Arnold4(alSurface)": {
+    "primaryMetalness": "none", 
+    "diffuseColor": "Diffuse", 
+    "bump": "Normal", 
+    "pureColor": "Emissive", 
+    "height": "Height", 
+    "primaryReflectionF0": "none", 
+    "primaryReflectionColor": "Specular", 
+    "primaryReflectionGlossiness": "Roughness", 
+    "primaryReflectionIOR": "ior"
+  }, 
+  "Arnold5(aistandard)": {
+    "primaryMetalness": "Metalness", 
+    "diffuseColor": "BaseColor", 
+    "bump": "Normal", 
+    "pureColor": "Emissive", 
+    "height": "Height", 
+    "primaryReflectionF0": "none", 
+    "primaryReflectionColor": "none", 
+    "primaryReflectionGlossiness": "Roughness", 
+    "primaryReflectionIOR": "none"
+  }, 
+  "Vray": {
+    "primaryMetalness": "none", 
+    "diffuseColor": "Diffuse", 
+    "bump": "Normal", 
+    "pureColor": "Emissive", 
+    "height": "Height", 
+    "primaryReflectionF0": "none", 
+    "primaryReflectionColor": "Reflection", 
+    "primaryReflectionGlossiness": "Glossiness", 
+    "primaryReflectionIOR": "ior"
+  }, 
+  "Custom": {
+    "primaryMetalness": "", 
+    "diffuseColor": "diffuse", 
+    "bump": "", 
+    "pureColor": "", 
+    "height": "", 
+    "primaryReflectionF0": "", 
+    "primaryReflectionColor": "specular", 
+    "primaryReflectionGlossiness": "glossiness", 
+    "primaryReflectionIOR": "ior"
+  }, 
+  "SubstanceDesigner_SpecGloss": {
+    "primaryMetalness": "none", 
+    "diffuseColor": "diffuse", 
+    "bump": "normal", 
+    "pureColor": "emissive", 
+    "height": "height", 
+    "primaryReflectionF0": "none", 
+    "primaryReflectionColor": "specular", 
+    "primaryReflectionGlossiness": "glossiness", 
+    "primaryReflectionIOR": "none"
+  }, 
+  "PBR_SpecGloss": {
+    "primaryMetalness": "none", 
+    "diffuseColor": "Diffuse", 
+    "bump": "Normal", 
+    "pureColor": "Emissive", 
+    "height": "Height", 
+    "primaryReflectionF0": "none", 
+    "primaryReflectionColor": "Specular", 
+    "primaryReflectionGlossiness": "Glossiness", 
+    "primaryReflectionIOR": "none"
+  }, 
+  "Arnold4(aistandard)": {
+    "primaryMetalness": "none", 
+    "diffuseColor": "Diffuse", 
+    "bump": "Normal", 
+    "pureColor": "Emissive", 
+    "height": "Height", 
+    "primaryReflectionF0": "f0", 
+    "primaryReflectionColor": "Specular", 
+    "primaryReflectionGlossiness": "Roughness", 
+    "primaryReflectionIOR": "none"
+  }, 
+  "SubstanceDesigner_MetalRough": {
+    "primaryMetalness": "metallic", 
+    "diffuseColor": "basecolor", 
+    "bump": "normal", 
+    "pureColor": "emissive", 
+    "height": "height", 
+    "primaryReflectionF0": "none", 
+    "primaryReflectionColor": "none", 
+    "primaryReflectionGlossiness": "roughness", 
+    "primaryReflectionIOR": "none"
+  }
+}

@@ -1,0 +1,7 @@
+SplitWeight_Set = 'SplitWeight_Set'
+SrcInf_Set = 'SplitWeight_SrcInf_Set'
+SurCrv_Set = 'SplitWeight_SurCrv_Set'
+SubInf_Set = 'SplitWeight_SubInf_Set'
+QuickSel_Set = 'QuickSelect_Set' 
+Fractal_Node = 'fractal_node'
+LastSel_Set = 'LastSelect_Set' 

@@ -1,0 +1,69 @@
+{
+"diffuseColor" 								:["diffuse","default"],
+"diffuseWeight" 							:["diffuse_weight","default"],
+"diffuseRoughness" 							:["diffuse_roughness","default"],
+
+"specularOnly"								:["refl_hl_only","default"],
+
+"anisotropy"								:["anisotropy","default"],
+"anisotropyRotation"						:["anisotropy_rotation","default"],
+"anisotropyUVcoords"						:["none","none"],
+
+"primaryMetalness"							:["none","none"],
+"primaryReflectionColor" 					:["refl_color","default"],
+"primaryReflectionWeight"					:["reflectivity","default"],
+"primaryReflectionGlossiness"				:["refl_gloss","default"],
+"primaryReflectionBRDF"						:["refl_brdf","{0:'default',1:'ggx'}"],
+"primaryReflectionUseFresnel"				:["brdf_fresnel","default"],
+"primaryReflectionUseRefractionFresnel"		:["brdf_fresnel_lockIOR","default"],
+"primaryReflectionF0"						:["brdf_0_degree_refl","default"],
+"primaryReflectionF90"						:["brdf_90_degree_refl","default"],
+"primaryReflectionIOR"						:["brdf_fresnel_ior","default"],
+
+"secondaryMetalness"						:["none","none"],
+"secondaryReflectionColor" 					:["refl_base_color","default"],
+"secondaryReflectionWeight"					:["refl_base","default"],
+"secondaryReflectionGlossiness"				:["refl_base_gloss","default"],
+"secondaryReflectionBRDF"					:["refl_base_brdf","{0:'default',1:'ggx'}"],
+"secondaryReflectionUseFresnel"				:["brdf_base_fresnel","default"],
+"secondaryReflectionUseRefractionFresnel"	:["brdf_base_fresnel_lockIOR","default"],
+"secondaryReflectionF0"						:["brdf_base_0_degree_refl","default"],
+"secondaryReflectionF90"					:["brdf_base_90_degree_refl","default"],
+"secondaryReflectionIOR"					:["brdf_base_fresnel_ior","default"],
+
+"refractionColor"							:["refr_color","default"],
+"refractionWeight"							:["transparency","default"],
+"refractionGlossiness"						:["refr_gloss","default"],
+"IOR"										:["refr_ior","default"],
+"thinWalled"								:["thin_walled","default"],
+
+"enableFogColor"							:["refr_falloff_on","default"],
+"fogDistance"								:["refr_falloff_dist","default"],
+"useEndColor"								:["refr_falloff_color_on","default"],
+"endColor"									:["refr_falloff_color","default"],
+
+"enableTranslucency"						:["refr_translucency","default"],
+"translucencyColor"							:["refr_trans_color","default"],
+"translucencyWeight"						:["refr_trans_weight","default"],
+
+"pureColor"									:["additional_color","default"],
+"pureColorScale"							:["incandescent_scale","default"],
+
+"cutout"									:["cutout_opacity","default"],
+
+"bump"										:["bump_input","default"],
+
+"sssWeight"									:["none","none"],
+"sssMode"									:["none","none"],
+"globalScale"								:["none","none"],
+"sssRadius01"								:["none","none"],
+"sssWeight01"								:["none","none"],
+"sssColor01"								:["none","none"],
+"sssRadius02"								:["none","none"],
+"sssWeight02"								:["none","none"],
+"sssColor02"								:["none","none"],
+"sssRadius03"								:["none","none"],
+"sssWeight03"								:["none","none"],
+"sssColor03"								:["none","none"]
+	}
+	

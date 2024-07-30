@@ -1,0 +1,155 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>skinning.tools.mirror_weights.commands module &#8212; skinning  &#39;&#39; documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     ' &#39;&#39;',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skinning  &#39;&#39; documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-skinning.tools.mirror_weights.commands">
+<span id="skinning-tools-mirror-weights-commands-module"></span><h1>skinning.tools.mirror_weights.commands module<a class="headerlink" href="#module-skinning.tools.mirror_weights.commands" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="skinning.tools.mirror_weights.commands.mirror_weights">
+<code class="descclassname">skinning.tools.mirror_weights.commands.</code><code class="descname">mirror_weights</code><span class="sig-paren">(</span><em>geometry</em>, <em>edge</em>, <em>inverse=False</em>, <em>replace=('L'</em>, <em>'R')</em><span class="sig-paren">)</span><a class="headerlink" href="#skinning.tools.mirror_weights.commands.mirror_weights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mirror the weights using the provided geometry and symmetry edge. An error
+will be raised when no skin cluster is attached to the geometry and the
+inverse variable determines which side gets new weights. The mapper is used
+to establish a mirror mapping between the influences.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>geometry</strong> (<em>str</em>) – </li>
+<li><strong>edge</strong> (<em>int</em>) – </li>
+<li><strong>inverse</strong> (<em>bool</em>) – </li>
+<li><strong>replace</strong> (<em>tuple</em><em>[</em><em>str</em><em>]</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RuntimeError</strong> – When symmetry cannot be established.</li>
+<li><strong>RuntimeError</strong> – When no skin cluster is attached.</li>
+<li><strong>RuntimeError</strong> – When no influences cannot be mirrored.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="skinning.tools.mirror_weights.commands.mirror_weights_on_selection">
+<code class="descclassname">skinning.tools.mirror_weights.commands.</code><code class="descname">mirror_weights_on_selection</code><span class="sig-paren">(</span><em>inverse=False</em>, <em>replace=('L'</em>, <em>'R')</em><span class="sig-paren">)</span><a class="headerlink" href="#skinning.tools.mirror_weights.commands.mirror_weights_on_selection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mirror the weights using the current selection. The selection is supposed
+to be a mesh edge which dictates the symmetry. An error will be raised
+when no skin cluster is attached to the geometry and the inverse variable
+determines which side gets new weights. The mapper is used to establish a
+mirror mapping between the influences.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>inverse</strong> (<em>bool</em>) – </li>
+<li><strong>replace</strong> (<em>tuple</em><em>[</em><em>str</em><em>]</em>) – </li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
+<li><strong>RuntimeError</strong> – When nothing is selected.</li>
+<li><strong>RuntimeError</strong> – When no edge is selected</li>
+<li><strong>RuntimeError</strong> – When symmetry cannot be established.</li>
+<li><strong>RuntimeError</strong> – When no skin cluster is attached.</li>
+<li><strong>RuntimeError</strong> – When no influences cannot be mirrored.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/skinning.tools.mirror_weights.commands.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">skinning  &#39;&#39; documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, &#39;Robert Joosten&#39;.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

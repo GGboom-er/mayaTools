@@ -1,0 +1,2 @@
+from weights_editor_tool import weights_editor
+weights_editor.run()

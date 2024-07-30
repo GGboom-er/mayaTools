@@ -1,0 +1,49 @@
+{
+	"Default":{
+"enableSubdivision" 								:["enableSubdivision","default"],
+"subdivisions" 										:["subdivisions","default"],
+"displacementScale"  								:["displacementScale","default"],
+"enableDisplacement" 								:["enableDisplacement","default"],
+"subdivType"										:["subdivType","{0:'linear',1:'smooth_default'}"]
+	},
+
+	"Redshift":{
+"enableSubdivision" 								:["rsEnableSubdivision","default"],
+"subdivisions" 										:["rsMaxTessellationSubdivs","default"],
+"displacementScale"  								:["rsDisplacementScale","default"],
+"enableDisplacement" 								:["rsEnableDisplacement","default"],
+"subdivType"										:["rsDoSmoothSubdivision","{0:'linear',1:'smooth_default'}"]
+
+
+	},
+
+
+	"arnold":{
+"enableSubdivision" 								:["aiSubdivType","boolize"],
+"subdivisions" 										:["aiSubdivIterations","default"],
+"displacementScale"  								:["aiDispHeight","default"],
+"enableDisplacement" 								:["aiDispHeight","ignoreTrueBoolize"],
+"subdivType"										:["aiSubdivType","{2:'linear',1:'smooth_default'}"]
+
+
+	},
+		"vray":{
+"enableSubdivision" 								:["vraySubdivEnable","default"],
+"subdivisions" 										:["vrayMaxSubdivs","default"],
+"displacementScale"  								:["vrayDisplacementAmount","default"],
+"enableDisplacement" 								:["vrayDisplacementNone","reverse"],
+"subdivType"										:["none","none"]
+
+
+	},
+			"legacy":{
+"enableSubdivision" 								:["none","none"],
+"subdivisions" 										:["none","none"],
+"displacementScale"  								:["none","none"],
+"enableDisplacement" 								:["none","none"],
+"subdivType"										:["none","none"]
+
+
+	}
+}
+
